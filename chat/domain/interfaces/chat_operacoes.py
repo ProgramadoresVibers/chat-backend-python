@@ -8,7 +8,7 @@ from domain.entities.mensagem import Mensagem
 class ChatOperacoesInterface(ABC):
 
     @abstractmethod
-    def criar_novo_usuario(self, nome: str, senha: str) -> Usuario:
+    def criar_novo_usuario(self, nome: str) -> Usuario:
         pass
 
     @abstractmethod
