@@ -3,30 +3,31 @@ from abc import ABC, abstractmethod
 from domain.entities.usuario import Usuario
 from domain.entities.sala import Sala
 from domain.entities.mensagem import Mensagem
+from domain.shared.resultado import Resultado
 
 
 class ChatOperacoesInterface(ABC):
 
     @abstractmethod
-    def criar_novo_usuario(self, nome: str) -> Usuario:
+    def criar_novo_usuario(self, nome: str) -> Resultado[Usuario]:
         pass
 
     @abstractmethod
-    def criar_nova_sala(self, nome: str) -> Sala:
+    def criar_nova_sala(self, nome: str) -> Resultado[Sala]:
         pass
 
     @abstractmethod
-    def listar_salas(self) -> list[Sala]:
+    def listar_salas(self) -> Resultado[list[Sala]]:
         pass
 
     @abstractmethod
-    def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int) -> None:
+    def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int) -> Resultado[Mensagem]:
         pass
 
     @abstractmethod
-    def listar_mensagens(self) -> list[Mensagem]:
+    def listar_mensagens(self, id_sala: int) -> Resultado[list[Mensagem]]:
         pass
 
     @abstractmethod
-    def apagar_mensagem(self, id_mensagem: int, id_usuario: int) -> None:
+    def apagar_mensagem(self, id_mensagem: int, id_usuario: int) -> Resultado[None]:
         pass

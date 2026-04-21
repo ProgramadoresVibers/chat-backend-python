@@ -1,13 +1,16 @@
-class Resultado:
-    def __init__(self, sucesso, conteudo=None, erro=None):
+from typing import Generic, TypeVar, Optional
+
+T = TypeVar("T")
+class Resultado(Generic[T]):
+    def __init__(self, sucesso: bool, conteudo: Optional[T] = None, erro: str = None):
         self.sucesso = sucesso
         self.conteudo = conteudo
         self.erro = erro
 
     @staticmethod
-    def ok(conteudo=None):
-        return Resultado(sucesso=True, conteudo=conteudo)
+    def ok(conteudo: T):
+        return Resultado(True, conteudo)
 
     @staticmethod
-    def falha(erro):
-        return Resultado(sucesso=False, erro=erro)
+    def falha(erro: str):
+        return Resultado(False, None, erro)

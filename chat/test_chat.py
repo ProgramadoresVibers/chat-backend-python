@@ -2,8 +2,7 @@ from service.chat_facade import ChatFacade
 from proxy.chat_proxy import ChatProxy
 
 
-
-def teste_basico():
+def teste_fluxo_completo():
     facade = ChatFacade()
     chat = ChatProxy(facade)
 
@@ -12,45 +11,27 @@ def teste_basico():
 
     chat.enviar_mensagem("Salve!", sala.get_id_sala(), usuario.get_id_usuario())
 
-    mensagens = chat.listar_mensagens()
+    mensagens = chat.listar_mensagens(sala.get_id_sala()).conteudo
 
-    print("\n=== TESTE BÁSICO ===")
+    print("\n=== TESTE FLUXO COMPLETO ===")
     for msg in mensagens:
         print(msg._formatar_mensagem())
 
 
-def teste_multiplos_usuarios():
+def teste_erro_usuario_invalido():
     facade = ChatFacade()
     chat = ChatProxy(facade)
 
-    u1 = chat.criar_novo_usuario("Iarley").conteudo
-    u2 = chat.criar_novo_usuario("João").conteudo
-
-    sala = chat.criar_nova_sala("Dev").conteudo
-
-    chat.enviar_mensagem("Fala devs!", sala.get_id_sala(), u1.get_id_usuario())
-    chat.enviar_mensagem("Salve!", sala.get_id_sala(), u2.get_id_usuario())
-
-    print("\n=== TESTE MÚLTIPLOS USUÁRIOS ===")
-    for msg in chat.listar_mensagens():
-        print(msg._formatar_mensagem())
-
-
-def teste_erro_mensagem_vazia():
-    facade = ChatFacade()
-    chat = ChatProxy(facade)
-
-    u = chat.criar_novo_usuario("Teste").conteudo
     sala = chat.criar_nova_sala("Erro").conteudo
+    usuario = chat.criar_novo_usuario("Iarley").conteudo
 
-    print("\n=== TESTE ERRO ===")
-    try:
-        chat.enviar_mensagem("   ", sala.get_id_sala(), u.get_id_usuario())
-    except Exception as e:
-        print("Erro capturado:", e)
+    resultado = chat.enviar_mensagem("Oi", sala.get_id_sala(), 999)
+
+    print("\n=== TESTE ERRO USUÁRIO ===")
+    if not resultado.sucesso:
+        print("Erro capturado:", resultado.erro)
 
 
 if __name__ == "__main__":
-    teste_basico()
-    teste_multiplos_usuarios()
-    teste_erro_mensagem_vazia()
+    teste_fluxo_completo()
+    teste_erro_usuario_invalido()
