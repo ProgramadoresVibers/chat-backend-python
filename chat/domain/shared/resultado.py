@@ -5,7 +5,7 @@ class Resultado:
         self.erro = erro
 
     @staticmethod
-    def ok(conteudo):
+    def ok(conteudo=None):
         return Resultado(sucesso=True, conteudo=conteudo)
 
     @staticmethod

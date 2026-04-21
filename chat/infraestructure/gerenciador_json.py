@@ -45,25 +45,35 @@ class GerenciadorJson:
 
     @staticmethod
     def adicionar_item(caminho_arquivo, item):
-        resultado = GerenciadorJson.ler_arquivo(caminho_arquivo)
+        resultado_leitura = GerenciadorJson.ler_arquivo(caminho_arquivo)
 
-        if not resultado.sucesso:
-            return resultado
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
 
-        dados = resultado.conteudo
+        dados = resultado_leitura.conteudo
         dados.append(item)
-        return GerenciadorJson._escrever_arquivo(caminho_arquivo, dados)
+
+        resultado_escrita = GerenciadorJson._escrever_arquivo(caminho_arquivo, dados)
+
+        if resultado_escrita.sucesso:
+            return Resultado.ok(item)
+        return resultado_escrita
 
     @staticmethod
     def remover_item(caminho_arquivo, **filtros):
-        resultado = GerenciadorJson.ler_arquivo(caminho_arquivo)
+        resultado_leitura = GerenciadorJson.ler_arquivo(caminho_arquivo)
 
-        if not resultado.sucesso:
-            return resultado
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
 
         dados_restantes = []
 
-        for item in resultado.conteudo:
+        for item in resultado_leitura.conteudo:
             if not all(item.get(chave) == valor for chave, valor in filtros.items()):
                 dados_restantes.append(item)
-        return GerenciadorJson._escrever_arquivo(caminho_arquivo, dados_restantes)
+
+        resultado_escrita = GerenciadorJson._escrever_arquivo(caminho_arquivo, dados_restantes)
+
+        if resultado_escrita.sucesso:
+            return Resultado.ok()
+        return resultado_escrita
