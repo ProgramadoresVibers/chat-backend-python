@@ -1,3 +1,5 @@
 .idea/
 __pycache__/
 *.pyc
+chat/data/*.json
+chat/data/*.txt
