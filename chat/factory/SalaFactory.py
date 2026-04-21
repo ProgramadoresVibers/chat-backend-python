@@ -1,4 +1,5 @@
 from domain.entities.sala import Sala
+from domain.shared.resultado import Resultado
 
 class SalaFactory:
     @staticmethod
@@ -6,4 +7,4 @@ class SalaFactory:
         try:
             return Sala(nome)
         except Exception as e:
-            raise("ocorreu um erro que eu não sei: " + e)
+            return Resultado.falha(f"ocorreu um erro que eu não sei: {e}")
