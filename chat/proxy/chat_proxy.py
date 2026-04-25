@@ -1,37 +1,70 @@
 from domain.interfaces.chat_operacoes import ChatOperacoesInterface
 from domain.shared.resultado import Resultado
+from infraestructure.gerenciador_json import GerenciadorJson
+from factory.UsuarioFactory import UsuarioFactory
 
 
 class ChatProxy(ChatOperacoesInterface):
-    def __init__(self, chat_facade: ChatOperacoesInterface):
+    def __init__(self, chat_facade: ChatOperacoesInterface, usuario_factory: UsuarioFactory):
         self._chat_facade = chat_facade
+        self._usuario_factory = usuario_factory
+        self.mensagens_path = 'chat/data/mensagens.json'
         
     # Criar um novo usuario.
     def criar_novo_usuario(self, nome: str) -> Resultado:
-        if not nome.strip():
-            return Resultado.falha("Nome do usuario não pode ser vazio")
+        if not nome or not nome.strip():
+            return Resultado.falha("Nome do usuário não pode ser vazio")
+        if len(nome.strip()) < 3:
+            return Resultado.falha("Nome do usuário deve ter pelo menos 3 caracteres")
 
-        print("[LOG] Criando novo usuário...")
-        return self._chat_facade.criar_novo_usuario(nome)
+        return self._usuario_factory.criar_usuario(nome)
 
+    # Criar uma nova sala
     def criar_nova_sala(self, nome: str) -> Resultado:
-        if not nome.strip():
+        if not nome or not nome.strip():
             return Resultado.falha("Nome da sala não pode ser vazio")
+        if len(nome.strip()) < 3:
+            return Resultado.falha("Nome da sala deve ter pelo menos 3 caracteres")
 
-        print("[LOG] Criando nova sala...")
         return self._chat_facade.criar_nova_sala(nome)
 
+    # Listar salas
     def listar_salas(self) -> Resultado:
         return self._chat_facade.listar_salas()
 
+    # Enviar mensagem
     def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int) -> Resultado:
-        if not texto.strip():
+        if not texto or not texto.strip():
             return Resultado.falha("Mensagem não pode ser vazia")
-
+        if len(texto.strip()) < 1:
+            return Resultado.falha("Mensagem deve ter pelo menos 1 caractere")
+        if not isinstance(id_sala, int) or id_sala <= 0:
+            return Resultado.falha("ID da sala inválido")
+        if not isinstance(id_usuario, int) or id_usuario <= 0:
+            return Resultado.falha("ID do usuário inválido")
+        
         return self._chat_facade.enviar_mensagem(texto, id_sala, id_usuario)
 
+
+    # Listar mensagens
     def listar_mensagens(self, id_sala: int) -> Resultado:
+        if not isinstance(id_sala, int) or id_sala <= 0:
+            return Resultado.falha("ID da sala inválido")
+        
         return self._chat_facade.listar_mensagens(id_sala)
 
+    # Apagar mensagem
     def apagar_mensagem(self, id_mensagem: int, id_usuario: int) -> Resultado:
+        if not isinstance(id_mensagem, int) or id_mensagem <= 0:
+            return Resultado.falha("ID da mensagem inválido")
+        if not isinstance(id_usuario, int) or id_usuario <= 0:
+            return Resultado.falha("ID do usuário inválido")
+        # Verifica se a mensagem existe e se é do usuário
+        mensagens = GerenciadorJson.ler_arquivo(self.mensagens_path).conteudo
+        mensagem = next((m for m in mensagens if m['id_mensagem'] == id_mensagem), None)
+        if not mensagem:
+            return Resultado.falha("Mensagem não encontrada")
+        if mensagem['id_usuario'] != id_usuario:
+            return Resultado.falha("Usuário não tem permissão para apagar esta mensagem")
+        
         return self._chat_facade.apagar_mensagem(id_mensagem, id_usuario)
