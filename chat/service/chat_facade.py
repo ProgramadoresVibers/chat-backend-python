@@ -13,11 +13,35 @@ class ChatFacade(ChatOperacoesInterface):
         self.salas_path = 'chat/data/salas.json'
         self.mensagens_path = 'chat/data/mensagens.json'
         os.makedirs('chat/data', exist_ok=True)
+        
+    
+    def _obter_objeto(self, tipo_factory: str, *args):
+        resultado_factory = ChatFactory.get_factory(tipo_factory)
+        if not resultado_factory.sucesso:
+            return resultado_factory
+
+        factory = resultado_factory.conteudo
+        resultado = factory.criar(args)
+
+        if not resultado.sucesso:
+            return resultado
+
+        return resultado
+
+    def _obter_usuario(self, id_usuario: int, nome: str):
+        return self._obter_objeto("UsuarioFactory", id_usuario, nome)
+
+    def _obter_sala(self, id_sala: int, nome: str):
+        return self._obter_objeto("SalaFactory", id_sala, nome)
+
+    def _obter_mensagem(self, id_mensagem: int, texto: str, sala: Sala, usuario: Usuario):
+        return self._obter_objeto("MensagemFactory", id_mensagem, texto, sala, usuario)
 
     def criar_novo_usuario(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.usuarios_path)
         if not resultado_leitura.sucesso:
             return resultado_leitura
+        
         usuarios = resultado_leitura.conteudo
 
         # Verifica se já existe usuário com o mesmo nome
@@ -31,21 +55,11 @@ class ChatFacade(ChatOperacoesInterface):
         if not res.sucesso:
             return res
 
-        resultado_factory = ChatFactory.get_factory("UsuarioFactory")
-        if not resultado_factory.sucesso:
-            return resultado_factory
-
-        resultado_usuario_factory = resultado_factory.conteudo
-        if not resultado_usuario_factory:
-            return resultado_usuario_factory
-
-        usuario_factory = resultado_usuario_factory.conteudo
-        resultado_usuario = usuario_factory.criar(usuario['id_usuario'], usuario['nome'])
-
-        if not resultado_usuario.sucesso:
-            return resultado_usuario
-
-        return resultado_usuario.conteudo
+        resultado_usuario_objeto = ChatFacade._obter_usuario(usuario['id_usuario'], usuario['nome'])
+        if not resultado_usuario_objeto.sucesso:
+            return resultado_usuario_objeto
+        
+        return resultado_usuario_objeto
 
     def criar_nova_sala(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path)
@@ -64,54 +78,62 @@ class ChatFacade(ChatOperacoesInterface):
         if not res.sucesso:
             return res
 
-        resultado_factory = ChatFactory.get_factory("SalaFactory")
-        if not resultado_factory.sucesso:
-            return resultado_factory
+        resultado_sala_objeto = ChatFacade._obter_sala(sala['id_sala'], sala['nome'])
+        if not resultado_sala_objeto.sucesso:
+            return resultado_sala_objeto
 
-        resultado_sala_factory = resultado_factory.conteudo
-        if not resultado_sala_factory:
-            return resultado_sala_factory
+        return resultado_sala_objeto
 
-        sala_factory = resultado_sala_factory.conteudo
-        resultado_sala = sala_factory.criar(sala['id_sala'], sala['nome'])
 
-        if not resultado_sala.sucesso:
-            return resultado_sala
 
-        return resultado_sala.conteudo
+
+
 
     def listar_salas(self):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path)
         if not resultado_leitura.sucesso:
             return resultado_leitura
         salas = resultado_leitura.conteudo
-
-        resultado_factory = ChatFactory.get_factory("SalaFactory")
-        if not resultado_factory.sucesso:
-            return resultado_factory
-        resultado_sala_factory = resultado_factory.conteudo
-        if not resultado_sala_factory:
-            return resultado_sala_factory
-        sala_factory = resultado_sala_factory.conteudo
-
+        
         salas_obj = []
         for s in salas:
-            resultado_sala = sala_factory.criar(s['id_sala'], s['nome'])
+            resultado_sala = ChatFacade._obter_sala(s['id_sala'], s['nome'])
             if not resultado_sala.sucesso:
                 return resultado_sala
             salas_obj.append(resultado_sala.conteudo)
         return Resultado.ok(salas_obj)
 
-    def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int) -> Resultado:
-        salas = GerenciadorJson.ler_arquivo(self.salas_path).conteudo
-        usuarios = GerenciadorJson.ler_arquivo(self.usuarios_path).conteudo
-        sala_existe = any(s['id_sala'] == id_sala for s in salas)
-        usuario_existe = any(u['id_usuario'] == id_usuario for u in usuarios)
 
-        if not sala_existe:
+
+
+
+    def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int):
+        resultado_leitura_sala = GerenciadorJson.ler_arquivo(self.salas_path)
+        if not resultado_leitura_sala.sucesso:
+            return resultado_leitura_sala
+
+        if not resultado_leitura_sala.conteudo:
             return Resultado.falha('Sala não existe')
-        if not usuario_existe:
+        
+        sala = resultado_leitura_sala.conteudo[0]
+        
+        resultado_leitura_usuario = GerenciadorJson.ler_arquivo(self.usuarios_path)
+        if not resultado_leitura_usuario.sucesso:
+            return resultado_leitura_usuario
+
+        if not resultado_leitura_usuario.conteudo:
             return Resultado.falha('Usuário não existe')
+        usuario = resultado_leitura_usuario.conteudo[0]
+
+
+
+        resultado_usuario = ChatFacade._obter_usuario(id_usuario, None)
+        if not resultado_usuario.sucesso:
+            return resultado_usuario
+
+        resultado_sala = ChatFacade._obter_sala(id_sala, None)
+        if not resultado_sala.sucesso:
+            return resultado_sala
 
         mensagens = GerenciadorJson.ler_arquivo(self.mensagens_path).conteudo
         novo_id = 1 if not mensagens else max(m['id_mensagem'] for m in mensagens) + 1
@@ -121,42 +143,26 @@ class ChatFacade(ChatOperacoesInterface):
         if not res.sucesso:
             return res
 
-        resultado_factory = ChatFactory.get_factory("MensagemFactory")
-        if not resultado_factory.sucesso:
-            return resultado_factory
-
-        resultado_mensagem_factory = resultado_factory.conteudo
-        if not resultado_mensagem_factory:
-            return resultado_mensagem_factory
-
-        mensagem_factory = resultado_mensagem_factory.conteudo
-        resultado_mensagem = mensagem_factory.criar(mensagem['id_mensagem'], mensagem['texto'], mensagem['id_usuario'], mensagem['id_sala'])
-
-        if not resultado_mensagem.sucesso:
-            return resultado_mensagem
-
-        return resultado_mensagem.conteudo
+        mensagem_objeto = ChatFacade._obter_mensagem(mensagem['id_mensagem'])
+        if not mensagem_objeto.sucesso:
+            return mensagem_objeto
+        
+        return Resultado.ok(mensagem_objeto)
 
     def listar_mensagens(self, id_sala: int) -> Resultado:
-        mensagens = GerenciadorJson.ler_arquivo(self.mensagens_path).conteudo
-        resultado_factory = ChatFactory.get_factory("MensagemFactory")
-        
-        if not resultado_factory.sucesso:
-            return resultado_factory
-        resultado_mensagem_factory = resultado_factory.conteudo
-        
-        if not resultado_mensagem_factory:
-            return resultado_mensagem_factory
-        mensagem_factory = resultado_mensagem_factory.conteudo
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path)
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+        mensagens = resultado_leitura.conteudo
 
-        msgs = []
+        mensagem_objetos = []
         for m in mensagens:
-            if m['id_sala'] == id_sala:
-                resultado_mensagem = mensagem_factory.criar(m['id_mensagem'], m['texto'], m['id_usuario'], m['id_sala'])
-                if not resultado_mensagem.sucesso:
-                    return resultado_mensagem
-                msgs.append(resultado_mensagem.conteudo)
-        return Resultado.ok(msgs)
+            mensagem_objeto = ChatFacade._obter_mensagem(m['id_mensagem'], m['texto'], m['id_sala'], m['id_usuario'])
+            if not mensagem_objeto.sucesso:
+                return mensagem_objeto
+            mensagem_objetos.append(mensagem_objeto.conteudo)
+
+        return Resultado.ok(mensagem_objetos)
 
     def apagar_mensagem(self, id_mensagem: int, id_usuario: int):
         resultado_mensagem = GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_usuario=id_usuario)

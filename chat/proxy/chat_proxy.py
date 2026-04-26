@@ -48,12 +48,18 @@ class ChatProxy(ChatOperacoesInterface):
         return self._chat_facade.listar_mensagens(id_sala)
 
     # Apagar mensagem
-    def apagar_mensagem(self, id_mensagem: int, id_usuario: int) -> Resultado:
+    def apagar_mensagem(self, id_mensagem: int, id_usuario: int):
         if not isinstance(id_mensagem, int) or id_mensagem <= 0:
             return Resultado.falha("ID da mensagem inválido")
         if not isinstance(id_usuario, int) or id_usuario <= 0:
             return Resultado.falha("ID do usuário inválido")
-        mensagens = GerenciadorJson.ler_arquivo(self.mensagens_path).conteudo
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path)
+
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+
+        mensagens = resultado_leitura.conteudo
+        
         mensagem = next((m for m in mensagens if m['id_mensagem'] == id_mensagem), None)
         if not mensagem:
             return Resultado.falha("Mensagem não encontrada")
