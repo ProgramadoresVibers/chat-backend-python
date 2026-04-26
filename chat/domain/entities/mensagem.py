@@ -1,5 +1,5 @@
-from sala import Sala
-from usuario import Usuario
+from .sala import Sala
+from .usuario import Usuario
 class Mensagem:
     def __init__(self, id_mensagem, texto, sala, usuario):
         self._id_mensagem = id_mensagem
