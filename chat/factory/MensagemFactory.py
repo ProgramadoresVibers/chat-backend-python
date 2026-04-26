@@ -2,10 +2,9 @@ from domain.entities.mensagem import Mensagem
 from domain.shared.resultado import Resultado
 
 class MensagemFactory:
-    @staticmethod
-    def criar_mensagem(texto, id_sala, id_usuario):
+    def criar(self, id_mensagem, texto, sala, usuario):
         try:
-            mensagem = Mensagem(texto, id_sala, id_usuario)
+            mensagem = Mensagem(id_mensagem, texto, sala, usuario)
             return Resultado.ok(mensagem)
         except Exception as e:
-            return Resultado.falha(f"ocorreu um erro que eu não sei: {e}")
+            return Resultado.falha(f"Erro inesperado ao tentar instanciar mensagem: {str(e)}")

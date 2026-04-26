@@ -1,11 +1,11 @@
 class Mensagem:
-    def __init__(self, id_mensagem: int, texto: str, id_usuario: int, id_sala: int):
+    def __init__(self, id_mensagem, texto, sala, usuario):
         self._id_mensagem = id_mensagem
         self._texto = texto
-        self._sala = id_sala
-        self._usuario = id_usuario
+        self._sala = sala
+        self._usuario = usuario
 
-    def get_id_mensagem(self) -> int:
+    def get_id_mensagem(self):
         return self._id_mensagem
 
     def get_texto(self):

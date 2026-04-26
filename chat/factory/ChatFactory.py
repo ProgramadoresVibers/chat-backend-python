@@ -1,16 +1,16 @@
-import SalaFactory
-import UsuarioFactory
-import MensagemFactory
+from .SalaFactory import SalaFactory
+from .UsuarioFactory import UsuarioFactory
+from .MensagemFactory import MensagemFactory
+from domain.shared.resultado import Resultado
 
 class ChatFactory:
     @staticmethod
-    def get_factory(tipo): '''o que ser esse tipo?????????????????'''
-        try:
-            if (tipo == "SalaFactory"):
-                return SalaFactory()
-            elif (tipo == "UsuarioFactory"):
-                return UsuarioFactory()
-            elif (tipo == "MensagemFactory"):
-                return MensagemFactory()
-        except Exception as e:
-            raise("ocorreu um erro que eu não sei: " + e)
+    def get_factory(tipo):  #tipo = string que representa o tipo de factory que eu quero criar
+        if tipo == "SalaFactory":
+            return Resultado.ok(SalaFactory())
+        elif tipo == "UsuarioFactory":
+            return Resultado.ok(UsuarioFactory())
+        elif tipo == "MensagemFactory":
+            return Resultado.ok(MensagemFactory())
+        else:
+            return Resultado.falha("Tipo de factory desconhecido")

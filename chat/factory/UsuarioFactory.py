@@ -1,9 +1,9 @@
 from domain.entities.usuario import Usuario
+from domain.shared.resultado import Resultado
 
 class UsuarioFactory:
-    @staticmethod
-    def criar_usuario(nome):
+    def criar(self, id_usuario, nome):
         try:
-            return Usuario(nome):
+            return Resultado.ok(Usuario(id_usuario, nome))
         except Exception as e:
-            raise("ocorreu um erro que eu não sei: " + e)
+            return Resultado.falha(f"Erro inesperado ao tentar instanciar usuário: {str(e)}")
