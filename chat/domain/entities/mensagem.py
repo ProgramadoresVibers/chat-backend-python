@@ -3,7 +3,7 @@ from .usuario import Usuario
 class Mensagem:
     def __init__(self, id_mensagem, texto, sala, usuario):
         self._id_mensagem = id_mensagem
-        self._texto = texto
+        self._texto = self._formatar_mensagem(texto, usuario)
         self._sala = sala
         self._usuario = usuario
 
@@ -19,5 +19,5 @@ class Mensagem:
     def get_usuario(self) -> Usuario:
         return self._usuario
 
-    def _formatar_mensagem(self) -> str:
-        return f"{self.get_usuario()}:\n{self.get_texto()}"
+    def _formatar_mensagem(self, texto, usuario) -> str:
+        return f"{usuario.get_nome()}:\n{texto}"

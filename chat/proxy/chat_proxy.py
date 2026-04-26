@@ -53,16 +53,16 @@ class ChatProxy(ChatOperacoesInterface):
             return Resultado.falha("ID da mensagem inválido")
         if not isinstance(id_usuario, int) or id_usuario <= 0:
             return Resultado.falha("ID do usuário inválido")
-        resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path)
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path, id_mensagem=id_mensagem)
 
         if not resultado_leitura.sucesso:
             return resultado_leitura
 
-        mensagens = resultado_leitura.conteudo
-        
-        mensagem = next((m for m in mensagens if m['id_mensagem'] == id_mensagem), None)
-        if not mensagem:
+        if not resultado_leitura.conteudo:
             return Resultado.falha("Mensagem não encontrada")
+
+        mensagem = resultado_leitura.conteudo[0]
+
         if mensagem['id_usuario'] != id_usuario:
             return Resultado.falha("Usuário não tem permissão para apagar esta mensagem")
         return self._chat_facade.apagar_mensagem(id_mensagem, id_usuario)
