@@ -33,6 +33,19 @@ class ChatFacade(ChatOperacoesInterface):
     def _obter_mensagem(self, id_mensagem: int, texto: str, sala: Sala, usuario: Usuario):
         return self._obter_objeto("MensagemFactory", id_mensagem, texto, sala, usuario)
 
+    def acessar_usuario(self, nome: str):
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.usuarios_path, nome=nome)
+
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+
+        if not resultado_leitura.conteudo:
+            return Resultado.falha('Não existe usuário com esse nome')
+
+        usuario = resultado_leitura.conteudo[0]
+
+        return self._obter_usuario(usuario['id_usuario'], usuario['nome'])
+
     def criar_novo_usuario(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.usuarios_path)
         if not resultado_leitura.sucesso:

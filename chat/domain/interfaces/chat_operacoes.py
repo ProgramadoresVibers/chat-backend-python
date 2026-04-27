@@ -9,6 +9,10 @@ from domain.shared.resultado import Resultado
 class ChatOperacoesInterface(ABC):
 
     @abstractmethod
+    def acessar_usuario(self, nome: str) -> Resultado[Usuario]:
+        pass
+
+    @abstractmethod
     def criar_novo_usuario(self, nome: str) -> Resultado[Usuario]:
         pass
 
@@ -17,7 +21,7 @@ class ChatOperacoesInterface(ABC):
         pass
 
     @abstractmethod
-    def listar_salas(self) -> Resultado[list[Sala]]:
+    def listar_salas(self) -> Resultado[list[dict]]:
         pass
 
     @abstractmethod
@@ -25,7 +29,7 @@ class ChatOperacoesInterface(ABC):
         pass
 
     @abstractmethod
-    def listar_mensagens(self, id_sala: int) -> Resultado[list[Mensagem]]:
+    def listar_mensagens(self, id_sala: int) -> Resultado[list[dict]]:
         pass
 
     @abstractmethod

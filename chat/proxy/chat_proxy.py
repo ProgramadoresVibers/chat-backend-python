@@ -7,7 +7,15 @@ class ChatProxy(ChatOperacoesInterface):
     def __init__(self, chat_facade: ChatOperacoesInterface):
         self._chat_facade = chat_facade
         self.mensagens_path = 'chat/data/mensagens.json'
-        
+
+    def acessar_usuario(self, nome: str):
+        if not nome or not nome.strip():
+            return Resultado.falha("Nome do usuário não pode ser vazio")
+        if len(nome.strip()) < 3:
+            return Resultado.falha("Nome do usuário deve ter pelo menos 3 caracteres")
+
+        return self._chat_facade.acessar_usuario(nome)
+
     # Criar um novo usuario.
     def criar_novo_usuario(self, nome: str):
         if not nome or not nome.strip():
@@ -33,8 +41,6 @@ class ChatProxy(ChatOperacoesInterface):
     def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int) -> Resultado:
         if not texto or not texto.strip():
             return Resultado.falha("Mensagem não pode ser vazia")
-        if len(texto.strip()) < 1:
-            return Resultado.falha("Mensagem deve ter pelo menos 1 caractere")
         if not isinstance(id_sala, int) or id_sala <= 0:
             return Resultado.falha("ID da sala inválido")
         if not isinstance(id_usuario, int) or id_usuario <= 0:
