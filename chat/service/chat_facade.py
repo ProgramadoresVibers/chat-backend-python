@@ -21,12 +21,8 @@ class ChatFacade(ChatOperacoesInterface):
             return resultado_factory
 
         factory = resultado_factory.conteudo
-        resultado = factory.criar(*args)
 
-        if not resultado.sucesso:
-            return resultado
-
-        return resultado
+        return factory.criar(*args)
 
     def _obter_usuario(self, id_usuario: int, nome: str):
         return self._obter_objeto("UsuarioFactory", id_usuario, nome)
@@ -55,11 +51,7 @@ class ChatFacade(ChatOperacoesInterface):
         if not res.sucesso:
             return res
 
-        resultado_usuario_objeto = self._obter_usuario(usuario['id_usuario'], usuario['nome'])
-        if not resultado_usuario_objeto.sucesso:
-            return resultado_usuario_objeto
-
-        return resultado_usuario_objeto
+        return self._obter_usuario(usuario['id_usuario'], usuario['nome'])
 
     def criar_nova_sala(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path)
@@ -78,17 +70,10 @@ class ChatFacade(ChatOperacoesInterface):
         if not res.sucesso:
             return res
 
-        resultado_sala_objeto = self._obter_sala(sala['id_sala'], sala['nome'])
-        if not resultado_sala_objeto.sucesso:
-            return resultado_sala_objeto
-
-        return resultado_sala_objeto
+        return self._obter_sala(sala['id_sala'], sala['nome'])
 
     def listar_salas(self):
-        resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path)
-        if not resultado_leitura.sucesso:
-            return resultado_leitura
-        return resultado_leitura
+        return GerenciadorJson.ler_arquivo(self.salas_path)
 
     def enviar_mensagem(self, texto: str, id_sala: int, id_usuario: int):
         resultado_leitura_sala = GerenciadorJson.ler_arquivo(self.salas_path, id_sala=id_sala)
@@ -146,14 +131,7 @@ class ChatFacade(ChatOperacoesInterface):
         return Resultado.ok(mensagem_objeto)
 
     def listar_mensagens(self, id_sala: int) -> Resultado:
-        resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path, id_sala=id_sala)
-        if not resultado_leitura.sucesso:
-            return resultado_leitura
-        return resultado_leitura
+        return GerenciadorJson.ler_arquivo(self.mensagens_path, id_sala=id_sala)
 
     def apagar_mensagem(self, id_mensagem: int, id_usuario: int):
-        resultado_mensagem = GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_usuario=id_usuario)
-        if not resultado_mensagem.sucesso:
-            return resultado_mensagem
-        return resultado_mensagem
-    
+        return GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_usuario=id_usuario)
