@@ -33,5 +33,5 @@ class ChatOperacoesInterface(ABC):
         pass
 
     @abstractmethod
-    def apagar_mensagem(self, id_mensagem: int, id_usuario: int) -> Resultado[None]:
+    def apagar_mensagem(self, id_mensagem: int, id_sala: int, id_usuario: int) -> Resultado[None]:
         pass

@@ -54,9 +54,11 @@ class ChatProxy(ChatOperacoesInterface):
         return self._chat_facade.listar_mensagens(id_sala)
 
     # Apagar mensagem
-    def apagar_mensagem(self, id_mensagem: int, id_usuario: int):
+    def apagar_mensagem(self, id_mensagem: int, id_sala: int, id_usuario: int):
         if not isinstance(id_mensagem, int) or id_mensagem <= 0:
             return Resultado.falha("ID da mensagem inválido")
+        if not isinstance(id_sala, int) or id_sala <= 0:
+            return Resultado.falha("ID da sala inválido")
         if not isinstance(id_usuario, int) or id_usuario <= 0:
             return Resultado.falha("ID do usuário inválido")
         resultado_leitura = GerenciadorJson.ler_arquivo(self.mensagens_path, id_mensagem=id_mensagem)
@@ -71,4 +73,7 @@ class ChatProxy(ChatOperacoesInterface):
 
         if mensagem['id_usuario'] != id_usuario:
             return Resultado.falha("Usuário não tem permissão para apagar esta mensagem")
-        return self._chat_facade.apagar_mensagem(id_mensagem, id_usuario)
+        if mensagem['id_sala'] != id_sala:
+            return Resultado.falha("Não foi possível encontrar essa mensagem nesta sala")
+
+        return self._chat_facade.apagar_mensagem(id_mensagem, id_sala, id_usuario)

@@ -146,5 +146,5 @@ class ChatFacade(ChatOperacoesInterface):
     def listar_mensagens(self, id_sala: int) -> Resultado:
         return GerenciadorJson.ler_arquivo(self.mensagens_path, id_sala=id_sala)
 
-    def apagar_mensagem(self, id_mensagem: int, id_usuario: int):
-        return GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_usuario=id_usuario)
+    def apagar_mensagem(self, id_mensagem: int, id_sala: int, id_usuario: int):
+        return GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_sala=id_sala, id_usuario=id_usuario)
