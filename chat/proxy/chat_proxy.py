@@ -6,6 +6,7 @@ from infraestructure.gerenciador_json import GerenciadorJson
 class ChatProxy(ChatOperacoesInterface):
     def __init__(self, chat_facade: ChatOperacoesInterface):
         self._chat_facade = chat_facade
+        self.salas_path = 'chat/data/salas.json'
         self.mensagens_path = 'chat/data/mensagens.json'
 
     def acessar_usuario(self, nome: str):
@@ -51,6 +52,15 @@ class ChatProxy(ChatOperacoesInterface):
     def listar_mensagens(self, id_sala: int) -> Resultado:
         if not isinstance(id_sala, int) or id_sala <= 0:
             return Resultado.falha("ID da sala inválido")
+
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path, id_sala=id_sala)
+
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+
+        if not resultado_leitura.conteudo:
+            return Resultado.falha("Não existe uma sala com esse ID")
+
         return self._chat_facade.listar_mensagens(id_sala)
 
     # Apagar mensagem
