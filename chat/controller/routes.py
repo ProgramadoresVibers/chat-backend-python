@@ -26,6 +26,26 @@ def login():
             }
     }
 
+@app.route("/entrar_sala", methods=['POST'])
+def entrar_na_sala():
+    dados_sala = request.json
+
+    resultado = chat.acessar_sala(dados_sala.get("nome"))
+
+    if not resultado.sucesso:
+        return {"sucesso": False, "erro": resultado.erro}
+
+    sala = resultado.conteudo
+
+    return {
+        "sucesso": True,
+        "conteudo":
+            {
+                "id_sala": sala.get_id_sala(),
+                "nome": sala.get_nome()
+            }
+    }
+
 @app.route("/criar_usuario", methods=["POST"])
 def criar_usuario():
     dados_usuario = request.json

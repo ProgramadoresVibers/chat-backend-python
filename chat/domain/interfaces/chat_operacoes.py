@@ -13,6 +13,10 @@ class ChatOperacoesInterface(ABC):
         pass
 
     @abstractmethod
+    def acessar_sala(self, nome: str) -> Resultado[Sala]:
+        pass
+
+    @abstractmethod
     def criar_novo_usuario(self, nome: str) -> Resultado[Usuario]:
         pass
 

@@ -17,6 +17,14 @@ class ChatProxy(ChatOperacoesInterface):
 
         return self._chat_facade.acessar_usuario(nome)
 
+    def acessar_sala(self, nome: str):
+        if not nome or not nome.strip():
+            return Resultado.falha("Nome da sala não pode ser vazio")
+        if len(nome.strip()) < 3:
+            return Resultado.falha("Nome da sala deve ter pelo menos 3 caracteres")
+
+        return self._chat_facade.acessar_sala(nome)
+
     # Criar um novo usuario.
     def criar_novo_usuario(self, nome: str):
         if not nome or not nome.strip():

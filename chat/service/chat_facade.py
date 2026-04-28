@@ -46,6 +46,19 @@ class ChatFacade(ChatOperacoesInterface):
 
         return self._obter_usuario(usuario['id_usuario'], usuario['nome'])
 
+    def acessar_sala(self, nome: str):
+        resultado_leitura = GerenciadorJson.ler_arquivo(self.salas_path, nome=nome)
+
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+
+        if not resultado_leitura.conteudo:
+            return Resultado.falha('Não existe sala com esse nome')
+
+        sala = resultado_leitura.conteudo[0]
+
+        return self._obter_sala(sala['id_sala'], sala['nome'])
+
     def criar_novo_usuario(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.usuarios_path)
         if not resultado_leitura.sucesso:
