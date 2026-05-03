@@ -1,23 +1,23 @@
-from .room import Room
-from .user import User
-class Message:
-    def __init__(self, message_id, text, room, user):
-        self._message_id = message_id
-        self._text = self._format_message(text, user)
-        self._room = room
-        self._user = user
+from .room import Sala
+from .user import Usuario
+class Mensagem:
+    def __init__(self, id_mensagem, texto, sala, usuario):
+        self._id_mensagem = id_mensagem
+        self._texto = self._formatar_mensagem(texto, usuario)
+        self._sala = sala
+        self._usuario = usuario
 
-    def get_id(self):
-        return self._message_id
+    def get_id_mensagem(self):
+        return self._id_mensagem
 
-    def get_text(self) -> str:
-        return self._text
+    def get_texto(self) -> str:
+        return self._texto
 
-    def get_room(self) -> Room:
-        return self._room
+    def get_sala(self) -> Sala:
+        return self._sala
 
-    def get_user(self) -> User:
-        return self._user
+    def get_usuario(self) -> Usuario:
+        return self._usuario
 
-    def _format_message(self, text, user) -> str:
-        return f"{user.get_name()}:\n{text}"
+    def _formatar_mensagem(self, texto, usuario) -> str:
+        return f"{usuario.get_nome()}:\n{texto}"
