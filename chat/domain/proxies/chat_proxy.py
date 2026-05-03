@@ -6,8 +6,8 @@ from chat.infraestructure.persistence.json_manager import GerenciadorJson
 class ChatProxy(ChatOperacoesInterface):
     def __init__(self, chat_facade: ChatOperacoesInterface):
         self._chat_facade = chat_facade
-        self.salas_path = 'chat/infraestructure/data/salas.json'
-        self.mensagens_path = 'chat/infraestructure/data/mensagens.json'
+        self.salas_path = '/home/iarley/Documentos/Devs/Alex/chat-backend-python/chat/infraestructure/data/salas.json'
+        self.mensagens_path = '/home/iarley/Documentos/Devs/Alex/chat-backend-python/chat/infraestructure/data/mensagens.json'
 
     def acessar_usuario(self, nome: str):
         if not nome or not nome.strip():
@@ -25,7 +25,6 @@ class ChatProxy(ChatOperacoesInterface):
 
         return self._chat_facade.acessar_sala(nome)
 
-    # Criar um novo usuario.
     def criar_novo_usuario(self, nome: str):
         if not nome or not nome.strip():
             return Resultado.falha("Nome do usuário não pode ser vazio")
