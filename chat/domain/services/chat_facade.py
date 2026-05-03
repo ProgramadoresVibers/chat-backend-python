@@ -9,10 +9,10 @@ import os
 
 class ChatFacade(ChatOperacoesInterface):
     def __init__(self):
-        self.usuarios_path = 'chat/data/usuarios.json'
-        self.salas_path = 'chat/data/salas.json'
-        self.mensagens_path = 'chat/data/mensagens.json'
-        os.makedirs('chat/data', exist_ok=True)
+        self.usuarios_path = 'infraestructure/data/usuarios.json'
+        self.salas_path = 'infraestructure/data/salas.json'
+        self.mensagens_path = 'infraestructure/data/mensagens.json'
+        os.makedirs('infraestructure/data/', exist_ok=True)
 
 
     def _obter_objeto(self, tipo_factory: str, *args):
@@ -22,16 +22,16 @@ class ChatFacade(ChatOperacoesInterface):
 
         factory = resultado_factory.conteudo
 
-        return factory.criar(*args)
+        return factory.create(*args)
 
     def _obter_usuario(self, id_usuario: int, nome: str):
-        return self._obter_objeto("UsuarioFactory", id_usuario, nome)
+        return self._obter_objeto("UserFactory", id_usuario, nome)
 
     def _obter_sala(self, id_sala: int, nome: str):
-        return self._obter_objeto("SalaFactory", id_sala, nome)
+        return self._obter_objeto("RoomFactory", id_sala, nome)
 
     def _obter_mensagem(self, id_mensagem: int, texto: str, sala: Sala, usuario: Usuario):
-        return self._obter_objeto("MensagemFactory", id_mensagem, texto, sala, usuario)
+        return self._obter_objeto("MessageFactory", id_mensagem, texto, sala, usuario)
 
     def acessar_usuario(self, nome: str):
         resultado_leitura = GerenciadorJson.ler_arquivo(self.usuarios_path, nome=nome)

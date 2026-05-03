@@ -13,4 +13,4 @@ class ChatFactory:
         elif factory_type == "MessageFactory":
             return Resultado.ok(MessageFactory())
         else:
-            return Resultado.falha("Unknown factory type")
+            return Resultado.falha("Tipo de factory desconhecido")

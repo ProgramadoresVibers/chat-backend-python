@@ -1,7 +1,7 @@
 .idea/
 __pycache__/
 *.pyc
-chat/data/*.json
-chat/data/*.txt
+chat/infraestructure/data/*.json
+chat/infraestructure/data/*.txt
 .venv/
 .pytest_cache/
