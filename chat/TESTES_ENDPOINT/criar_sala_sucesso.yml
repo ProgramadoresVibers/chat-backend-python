@@ -1,0 +1,21 @@
+info:
+  name: criar_sala_sucesso
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: 127.0.0.1:8080/criar_sala
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "impacta"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

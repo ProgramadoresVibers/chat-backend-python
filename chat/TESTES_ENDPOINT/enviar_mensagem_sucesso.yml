@@ -1,0 +1,23 @@
+info:
+  name: enviar_mensagem_sucesso
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: 127.0.0.1:8080/enviar_mensagem
+  body:
+    type: json
+    data: |-
+      {
+        "texto": "Eu não quero",
+        "id_sala": 1,
+        "id_usuario": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

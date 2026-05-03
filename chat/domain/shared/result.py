@@ -4,7 +4,7 @@ T = TypeVar("T")
 class Resultado(Generic[T]):
     def __init__(self, sucesso: bool, conteudo: Optional[T] = None, erro: str = None):
         self.sucesso = sucesso
-        self.conteudo = conteudo
+        self.conteudo = conteudo #o que ser conteudo????? str ou obj ou demonio?
         self.erro = erro
 
     @staticmethod
