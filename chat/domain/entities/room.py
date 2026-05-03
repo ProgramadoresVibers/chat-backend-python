@@ -1,10 +1,10 @@
-class Room:
-    def __init__(self, room_id, name):
-        self._room_id = room_id
-        self._name = name
+class Sala:
+    def __init__(self, id_sala, nome):
+        self._id_sala = id_sala
+        self._nome = nome
 
-    def get_id(self):
-        return self._room_id
+    def get_id_sala(self):
+        return self._id_sala
 
-    def get_name(self):
-        return self._name
+    def get_nome(self):
+        return self._nome
