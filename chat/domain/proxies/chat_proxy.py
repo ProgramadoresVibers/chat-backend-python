@@ -6,8 +6,8 @@ from chat.infraestructure.persistence.json_manager import GerenciadorJson
 class ChatProxy(ChatOperacoesInterface):
     def __init__(self, chat_facade: ChatOperacoesInterface):
         self._chat_facade = chat_facade
-        self.salas_path = '/home/iarley/Documentos/Devs/Alex/chat-backend-python/chat/infraestructure/data/salas.json'
-        self.mensagens_path = '/home/iarley/Documentos/Devs/Alex/chat-backend-python/chat/infraestructure/data/mensagens.json'
+        self.salas_path = 'caminho Absoluto'
+        self.mensagens_path = 'caminho Absoluto'
 
     def acessar_usuario(self, nome: str):
         if not nome or not nome.strip():
