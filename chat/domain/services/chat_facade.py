@@ -4,7 +4,7 @@ from chat.domain.entities.room import Sala
 from chat.domain.entities.message import Mensagem
 from chat.domain.shared.result import Resultado
 from chat.infraestructure.persistence.json_manager import GerenciadorJson
-from factory.ChatFactory import ChatFactory
+from chat.domain.factory.ChatFactory import ChatFactory
 import os
 
 class ChatFacade(ChatOperacoesInterface):
