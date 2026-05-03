@@ -1,6 +1,6 @@
-from domain.interfaces.chat_operacoes import ChatOperacoesInterface
-from domain.shared.resultado import Resultado
-from infraestructure.gerenciador_json import GerenciadorJson
+from chat.domain.interfaces.repositories.chat_operations import ChatOperacoesInterface
+from chat.domain.shared.result import Resultado
+from chat.infraestructure.persistence.json_manager import GerenciadorJson
 
 
 class ChatProxy(ChatOperacoesInterface):

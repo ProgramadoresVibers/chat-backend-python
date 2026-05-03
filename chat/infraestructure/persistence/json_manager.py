@@ -1,4 +1,4 @@
-from domain.shared.resultado import Resultado
+from chat.domain.shared.result import Resultado
 import json
 
 class GerenciadorJson:
