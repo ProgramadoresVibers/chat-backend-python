@@ -1,16 +1,18 @@
 info:
-  name: criar_usuario
+  name: enviar_mensagem_falha
   type: http
-  seq: 5
+  seq: 10
 
 http:
   method: POST
-  url: 127.0.0.1:8080/criar_usuario
+  url: 127.0.0.1:8080/enviar_mensagem
   body:
     type: json
     data: |-
       {
-        "nome": "estêvan"
+        "texto": " ",
+        "id_sala": 1,
+        "id_usuario": 1
       }
   auth: inherit
 

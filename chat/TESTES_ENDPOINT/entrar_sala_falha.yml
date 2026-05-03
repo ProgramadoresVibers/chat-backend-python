@@ -1,11 +1,11 @@
 info:
   name: entrar_sala_falha
   type: http
-  seq: 4
+  seq: 2
 
 http:
   method: POST
-  url: localhost:8080/entrar_sala
+  url: 127.0.0.1:8080/entrar_sala
   body:
     type: json
     data: |-

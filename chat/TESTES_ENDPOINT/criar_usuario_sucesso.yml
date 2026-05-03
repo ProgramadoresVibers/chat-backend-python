@@ -1,16 +1,16 @@
 info:
-  name: login_falha
+  name: criar_usuario_sucesso
   type: http
-  seq: 6
+  seq: 4
 
 http:
   method: POST
-  url: 127.0.0.1:8080/login
+  url: 127.0.0.1:8080/criar_usuario
   body:
     type: json
     data: |-
       {
-        "nome": "  "
+        "nome": "estêvan"
       }
   auth: inherit
 

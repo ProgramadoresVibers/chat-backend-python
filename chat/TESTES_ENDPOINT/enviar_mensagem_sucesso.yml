@@ -1,16 +1,18 @@
 info:
-  name: login_falha
+  name: enviar_mensagem_sucesso
   type: http
-  seq: 6
+  seq: 9
 
 http:
   method: POST
-  url: 127.0.0.1:8080/login
+  url: 127.0.0.1:8080/enviar_mensagem
   body:
     type: json
     data: |-
       {
-        "nome": "  "
+        "texto": "Eu não quero",
+        "id_sala": 1,
+        "id_usuario": 1
       }
   auth: inherit
 

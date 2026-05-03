@@ -1,0 +1,15 @@
+info:
+  name: salas/<int:id_sala>/mensagens/<int:id_mensagem>
+  type: http
+  seq: 12
+
+http:
+  method: DELETE
+  url: 127.0.0.1:8080/salas/<int:id_sala>/mensagens/<int:id_mensagem>
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
