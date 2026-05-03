@@ -1,6 +1,6 @@
 from flask import Flask, request
-from chat.service.chat_facade import ChatFacade
-from chat.proxy.chat_proxy import ChatProxy
+from chat.domain.services.chat_facade import ChatFacade
+from chat.domain.proxies.chat_proxy import ChatProxy
 
 app = Flask(__name__)
 

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from domain.entities.usuario import Usuario
-from domain.entities.sala import Sala
-from domain.entities.mensagem import Mensagem
-from domain.shared.resultado import Resultado
+from chat.domain.entities.user import Usuario
+from chat.domain.entities.room import Sala
+from chat.domain.entities.message import Mensagem
+from chat.domain.shared.result import Resultado
 
 
 class ChatOperacoesInterface(ABC):
