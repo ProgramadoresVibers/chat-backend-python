@@ -1,13 +1,22 @@
 from chat.domain.interfaces.repositories.chat_operations import ChatOperacoesInterface
 from chat.domain.shared.result import Resultado
 from chat.infraestructure.persistence.json_manager import GerenciadorJson
+from pathlib import Path
 
 
 class ChatProxy(ChatOperacoesInterface):
     def __init__(self, chat_facade: ChatOperacoesInterface):
+        # .parent sobe um nível por vez
+        raiz_projeto = Path(__file__).resolve().parent.parent.parent
+
+        data_dir = raiz_projeto / 'infraestructure' / 'data'
+
+        # Cria a pasta (parents=True: cria as pastas intermediárias se não existirem)
+        data_dir.mkdir(parents=True, exist_ok=True)
+
         self._chat_facade = chat_facade
-        self.salas_path = 'caminho Absoluto'
-        self.mensagens_path = 'caminho Absoluto'
+        self.salas_path = data_dir / 'salas.json'
+        self.mensagens_path = data_dir / 'mensagens.json'
 
     def acessar_usuario(self, nome: str):
         if not nome or not nome.strip():

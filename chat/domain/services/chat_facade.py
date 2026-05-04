@@ -1,19 +1,25 @@
 from chat.domain.interfaces.repositories.chat_operations import ChatOperacoesInterface
 from chat.domain.entities.user import Usuario
 from chat.domain.entities.room import Sala
-from chat.domain.entities.message import Mensagem
 from chat.domain.shared.result import Resultado
 from chat.infraestructure.persistence.json_manager import GerenciadorJson
 from chat.domain.factory.ChatFactory import ChatFactory
-import os
+from pathlib import Path
+
 
 class ChatFacade(ChatOperacoesInterface):
     def __init__(self):
-        self.usuarios_path = 'infraestructure/data/usuarios.json'
-        self.salas_path = 'infraestructure/data/salas.json'
-        self.mensagens_path = 'infraestructure/data/mensagens.json'
-        os.makedirs('infraestructure/data/', exist_ok=True)
+        # .parent sobe um nível por vez
+        raiz_projeto = Path(__file__).resolve().parent.parent.parent
 
+        data_dir = raiz_projeto / 'infraestructure' / 'data'
+
+        # Cria a pasta (parents=True: cria as pastas intermediárias se não existirem)
+        data_dir.mkdir(parents=True, exist_ok=True)
+
+        self.usuarios_path = data_dir / 'usuarios.json'
+        self.salas_path = data_dir / 'salas.json'
+        self.mensagens_path = data_dir / 'mensagens.json'
 
     def _obter_objeto(self, tipo_factory: str, *args):
         resultado_factory = ChatFactory.get_factory(tipo_factory)
