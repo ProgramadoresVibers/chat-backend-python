@@ -138,11 +138,8 @@ def listar_mensagens(id_sala):
         "conteudo": mensagens
     }
 
-@app.route("/salas/<int:id_sala>/mensagens/<int:id_mensagem>", methods=["DELETE"])
-def apagar_mensagem(id_sala, id_mensagem):
-    id_usuario = request.args.get("id_usuario", "")
-    id_usuario = int(id_usuario) if id_usuario.isdigit() else 0
-
+@app.route("/salas/<int:id_sala>/mensagens/<int:id_mensagem>/usuarios/<int:id_usuario>", methods=["DELETE"])
+def apagar_mensagem(id_sala, id_mensagem, id_usuario):
     resultado = chat.apagar_mensagem(id_mensagem, id_sala, id_usuario)
 
     if not resultado.sucesso:
