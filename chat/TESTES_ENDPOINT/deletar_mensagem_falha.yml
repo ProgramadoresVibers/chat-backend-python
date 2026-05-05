@@ -1,0 +1,15 @@
+info:
+  name: deletar_mensagem_falha
+  type: http
+  seq: 14
+
+http:
+  method: DELETE
+  url: 127.0.0.1:8080/salas/50/mensagens/2/usuarios/1
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

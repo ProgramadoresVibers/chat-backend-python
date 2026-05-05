@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "texto": "Eu não quero",
+        "texto": "te odeio caio e Iarley",
         "id_sala": 1,
         "id_usuario": 1
       }

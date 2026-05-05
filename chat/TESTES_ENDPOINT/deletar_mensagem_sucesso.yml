@@ -1,11 +1,11 @@
 info:
-  name: salas/<int:id_sala>/mensagens/<int:id_mensagem>
+  name: deletar_mensagem_sucesso
   type: http
-  seq: 12
+  seq: 13
 
 http:
   method: DELETE
-  url: 127.0.0.1:8080/salas/<int:id_sala>/mensagens/<int:id_mensagem>
+  url: 127.0.0.1:8080/salas/1/mensagens/2/usuarios/1
   auth: inherit
 
 settings:
