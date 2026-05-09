@@ -77,3 +77,35 @@ class GerenciadorJson:
         if resultado_escrita.sucesso:
             return Resultado.ok()
         return resultado_escrita
+
+    @staticmethod
+    def atualizar_item(caminho_arquivo, filtros, dados_atualizados):
+        resultado_leitura = GerenciadorJson.ler_arquivo(caminho_arquivo)
+
+        if not resultado_leitura.sucesso:
+            return resultado_leitura
+
+        dados = resultado_leitura.conteudo
+        item_encontrado = False
+        item_alterado = None
+
+        for item in dados:
+            if all(item.get(chave) == valor for chave, valor in filtros.items()):
+               item_encontrado = True
+
+               for chave in dados_atualizados.keys():
+                   if chave in item:
+                       item[chave] = dados_atualizados[chave]
+
+               item_alterado = item
+               break
+
+        if not item_encontrado:
+            return Resultado.falha("Item não foi encontrado")
+
+        resultado_escrita = GerenciadorJson._escrever_arquivo(caminho_arquivo, dados)
+
+        if resultado_escrita.sucesso:
+            return Resultado.ok(item_alterado)
+
+        return resultado_escrita

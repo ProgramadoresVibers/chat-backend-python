@@ -154,7 +154,7 @@ class ChatFacade(ChatOperacoesInterface):
 
         res = GerenciadorJson.adicionar_item(self.mensagens_path, {
             'id_mensagem': novo_id, 'texto': mensagem_objeto.get_texto(),
-            'id_usuario': id_usuario, 'id_sala': id_sala
+            'id_usuario': id_usuario, 'id_sala': id_sala, 'visivel': mensagem_objeto.get_visivel()
         })
 
         if not res.sucesso:
@@ -166,4 +166,8 @@ class ChatFacade(ChatOperacoesInterface):
         return GerenciadorJson.ler_arquivo(self.mensagens_path, id_sala=id_sala)
 
     def apagar_mensagem(self, id_mensagem: int, id_sala: int, id_usuario: int):
-        return GerenciadorJson.remover_item(self.mensagens_path, id_mensagem=id_mensagem, id_sala=id_sala, id_usuario=id_usuario)
+        return GerenciadorJson.atualizar_item(self.mensagens_path,
+                                              {"id_mensagem": id_mensagem,
+                                               "id_sala": id_sala,
+                                               "id_usuario": id_usuario},
+                                              {"visivel": False})

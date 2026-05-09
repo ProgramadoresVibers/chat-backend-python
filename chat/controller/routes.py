@@ -120,7 +120,8 @@ def enviar_mensagem():
                 "id_mensagem": mensagem.get_id_mensagem(),
                 "texto": mensagem.get_texto(),
                 "id_sala": mensagem.get_sala().get_id_sala(),
-                "id_usuario": mensagem.get_usuario().get_id_usuario()
+                "id_usuario": mensagem.get_usuario().get_id_usuario(),
+                "visivel": mensagem.get_visivel()
             }
     }
 

@@ -1,11 +1,14 @@
 from .room import Sala
 from .user import Usuario
+
+
 class Mensagem:
     def __init__(self, id_mensagem, texto, sala, usuario):
         self._id_mensagem = id_mensagem
         self._texto = self._formatar_mensagem(texto, usuario)
         self._sala = sala
         self._usuario = usuario
+        self._visivel = True
 
     def get_id_mensagem(self):
         return self._id_mensagem
@@ -18,6 +21,9 @@ class Mensagem:
 
     def get_usuario(self) -> Usuario:
         return self._usuario
+
+    def get_visivel(self) -> bool:
+        return self._visivel
 
     def _formatar_mensagem(self, texto, usuario) -> str:
         return f"{usuario.get_nome()}:\n{texto}"
