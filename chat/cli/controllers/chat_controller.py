@@ -32,6 +32,9 @@ class ChatController:
 
         raise ValueError(mensagem)
 
+    def help(self):
+        return self.invoker.executar("help")
+
     def login(self, nome):
         usuario = self.invoker.executar("login", nome)
         self.sessao.usuario = self._conteudo_ou_erro(

@@ -174,7 +174,13 @@ def rodar_cli(controller):
         argumento = argumento.strip()
 
         try:
-            if comando == "/login":
+            if comando == "/help":
+                if argumento:
+                    raise ValueError("Uso: /help")
+
+                print(controller.help())
+
+            elif comando == "/login":
                 nome = validar_argumento(argumento, "/login <nome>")
                 print(formatar_login(controller.login(nome)))
 

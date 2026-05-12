@@ -95,3 +95,15 @@ def test_controller_cli_executa_fluxo_com_servico_local(tmp_path):
 
     apagada = controller.apagar_mensagem()
     assert apagada["conteudo"]["visivel"] is False
+
+
+def test_controller_help_lista_comandos(tmp_path):
+    servico = criar_servico_temporario(tmp_path)
+    controller = criar_controller(servico)
+
+    ajuda = controller.help()
+
+    assert "/help" in ajuda
+    assert "/login <nome>" in ajuda
+    assert "/enviar <texto>" in ajuda
+    assert "/sair" in ajuda
