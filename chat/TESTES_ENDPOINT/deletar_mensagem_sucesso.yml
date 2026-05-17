@@ -1,0 +1,15 @@
+info:
+  name: deletar_mensagem_sucesso
+  type: http
+  seq: 13
+
+http:
+  method: DELETE
+  url: 127.0.0.1:8080/salas/1/mensagens/2/usuarios/1
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
