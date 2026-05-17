@@ -1,9 +1,9 @@
 import json
 
-from commands.command_invoker import CommandInvoker
-from controllers.chat_controller import ChatController
-from factory.command_factory import CommandFactory
-from services.local_chat_service import LocalChatService
+from chat.cli.commands.command_invoker import CommandInvoker
+from chat.cli.controllers.chat_controller import ChatController
+from chat.cli.factory.command_factory import CommandFactory
+from chat.cli.services.local_chat_service import LocalChatService
 
 
 def validar_argumento(argumento, uso):
