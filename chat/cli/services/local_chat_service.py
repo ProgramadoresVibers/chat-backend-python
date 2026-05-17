@@ -1,4 +1,7 @@
-from chat.cli.services.chat_service import ChatService
+from services.chat_service import ChatService
+import  sys
+import os
+sys.path.append(r'C:\Users\Estêvan S.S\Documents\prjote-alex\chat-backend-python')
 from chat.domain.entities.message import Mensagem
 from chat.domain.entities.room import Sala
 from chat.domain.entities.user import Usuario

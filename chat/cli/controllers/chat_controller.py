@@ -1,4 +1,4 @@
-from chat.cli.session import ChatSession
+from session import ChatSession
 
 
 class ChatController:
