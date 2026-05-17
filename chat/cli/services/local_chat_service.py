@@ -1,4 +1,4 @@
-from services.chat_service import ChatService
+from chat.cli.services.chat_service import ChatService
 import  sys
 import os
 sys.path.append(r'C:\Users\Estêvan S.S\Documents\prjote-alex\chat-backend-python')
