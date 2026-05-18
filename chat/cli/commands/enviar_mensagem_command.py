@@ -1,4 +1,4 @@
-from commands.command import Command
+from chat.cli.commands.command import Command
 
 
 class EnviarMensagemCommand(Command):
